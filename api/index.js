@@ -1,152 +1,110 @@
 export default async function handler(req, res) {
-  const BOT_TOKEN = "6302773252:AAEPCh69oRzT8_7BCE-vy80btGX3xmR2X5Y";  // <-- PUT YOUR NEW SAFE TOKEN
-  const CHAT_ID = "6302773252";
+  const BOT_TOKEN = "8051100730:AAEd1EQcHTrmw9YNMA0DuXlgabs7jmM0yo8"; 
+  const CHAT_ID = "5425526761";
 
   const q = req.query;
 
-  // Helper for Telegram call
+  // Helper function
   async function tg(method, data) {
-    const url = `https://api.telegram.org/bot${BOT_TOKEN}/${method}`;
-    const response = await fetch(url, {
+    const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/${method}`, {
       method: "POST",
       body: new URLSearchParams(data)
     });
     return await response.json();
   }
 
-  // -------------------------------------
-  //          TEXT MESSAGE
-  // -------------------------------------
+  // TEXT
   if (q.msg && !q.photo && !q.video && !q.audio && !q.doc && !q.gif && !q.sticker) {
-    return res.status(200).json(
-      await tg("sendMessage", {
-        chat_id: CHAT_ID,
-        text: q.msg
-      })
-    );
+    return res.status(200).json(await tg("sendMessage", {
+      chat_id: CHAT_ID,
+      text: q.msg
+    }));
   }
 
-  // -------------------------------------
-  //          PHOTO
-  // -------------------------------------
+  // PHOTO
   if (q.photo) {
-    return res.status(200).json(
-      await tg("sendPhoto", {
-        chat_id: CHAT_ID,
-        photo: q.photo,
-        caption: q.msg || ""
-      })
-    );
+    return res.status(200).json(await tg("sendPhoto", {
+      chat_id: CHAT_ID,
+      photo: q.photo,
+      caption: q.msg || ""
+    }));
   }
 
-  // -------------------------------------
-  //          VIDEO
-  // -------------------------------------
+  // VIDEO
   if (q.video) {
-    return res.status(200).json(
-      await tg("sendVideo", {
-        chat_id: CHAT_ID,
-        video: q.video,
-        caption: q.msg || ""
-      })
-    );
+    return res.status(200).json(await tg("sendVideo", {
+      chat_id: CHAT_ID,
+      video: q.video,
+      caption: q.msg || ""
+    }));
   }
 
-  // -------------------------------------
-  //          AUDIO (mp3)
-  // -------------------------------------
+  // AUDIO
   if (q.audio) {
-    return res.status(200).json(
-      await tg("sendAudio", {
-        chat_id: CHAT_ID,
-        audio: q.audio,
-        caption: q.msg || ""
-      })
-    );
+    return res.status(200).json(await tg("sendAudio", {
+      chat_id: CHAT_ID,
+      audio: q.audio,
+      caption: q.msg || ""
+    }));
   }
 
-  // -------------------------------------
-  //          VOICE (ogg)
-  // -------------------------------------
+  // VOICE
   if (q.voice) {
-    return res.status(200).json(
-      await tg("sendVoice", {
-        chat_id: CHAT_ID,
-        voice: q.voice,
-        caption: q.msg || ""
-      })
-    );
+    return res.status(200).json(await tg("sendVoice", {
+      chat_id: CHAT_ID,
+      voice: q.voice,
+      caption: q.msg || ""
+    }));
   }
 
-  // -------------------------------------
-  //          DOCUMENT (PDF, ZIP, etc.)
-  // -------------------------------------
+  // DOCUMENT
   if (q.doc) {
-    return res.status(200).json(
-      await tg("sendDocument", {
-        chat_id: CHAT_ID,
-        document: q.doc,
-        caption: q.msg || ""
-      })
-    );
+    return res.status(200).json(await tg("sendDocument", {
+      chat_id: CHAT_ID,
+      document: q.doc,
+      caption: q.msg || ""
+    }));
   }
 
-  // -------------------------------------
-  //          ANIMATION / GIF
-  // -------------------------------------
+  // GIF / ANIMATION
   if (q.gif) {
-    return res.status(200).json(
-      await tg("sendAnimation", {
-        chat_id: CHAT_ID,
-        animation: q.gif,
-        caption: q.msg || ""
-      })
-    );
+    return res.status(200).json(await tg("sendAnimation", {
+      chat_id: CHAT_ID,
+      animation: q.gif,
+      caption: q.msg || ""
+    }));
   }
 
-  // -------------------------------------
-  //          STICKER
-  // -------------------------------------
+  // STICKER
   if (q.sticker) {
-    return res.status(200).json(
-      await tg("sendSticker", {
-        chat_id: CHAT_ID,
-        sticker: q.sticker
-      })
-    );
+    return res.status(200).json(await tg("sendSticker", {
+      chat_id: CHAT_ID,
+      sticker: q.sticker
+    }));
   }
 
-  // -------------------------------------
-  //          LOCATION
-  // -------------------------------------
+  // LOCATION
   if (q.lat && q.lng) {
-    return res.status(200).json(
-      await tg("sendLocation", {
-        chat_id: CHAT_ID,
-        latitude: q.lat,
-        longitude: q.lng
-      })
-    );
+    return res.status(200).json(await tg("sendLocation", {
+      chat_id: CHAT_ID,
+      latitude: q.lat,
+      longitude: q.lng
+    }));
   }
 
-  // -------------------------------------
-  //          CONTACT
-  // -------------------------------------
+  // CONTACT
   if (q.phone && q.name) {
-    return res.status(200).json(
-      await tg("sendContact", {
-        chat_id: CHAT_ID,
-        phone_number: q.phone,
-        first_name: q.name
-      })
-    );
+    return res.status(200).json(await tg("sendContact", {
+      chat_id: CHAT_ID,
+      phone_number: q.phone,
+      first_name: q.name
+    }));
   }
 
-  // -------------------------------------
-  //          DEFAULT RESPONSE
-  // -------------------------------------
+  // DEFAULT
   return res.status(400).json({
     status: "error",
-    message: "Supported params: msg, photo, video, audio, voice, doc, gif, sticker, lat+lng, phone+name"
+    message:
+      "Supported: msg, photo, video, audio, voice, doc, gif, sticker, lat+lng, phone+name"
   });
 }
