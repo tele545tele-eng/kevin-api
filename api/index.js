@@ -1,6 +1,6 @@
 export default async function handler(req, res) {
   const BOT_TOKEN = "8051100730:AAEd1EQcHTrmw9YNMA0DuXlgabs7jmM0yo8"; 
-  const CHAT_ID = "5425526761";
+  const CHAT_ID = "6188083254";
 
   const q = req.query;
 
